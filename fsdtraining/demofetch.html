@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Products</title>
+    <style>
+        table {
+            background-color: aqua;
+            color: red;
+            border: 2px solid black;
+            margin: auto;
+            padding: 20px;
+            border-collapse: collapse; /* Added for cleaner table borders */
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Sr.no</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <!-- Added id="data" to target this specific body element -->
+        <tbody id="data">
+            <!-- JavaScript will inject the rows here -->
+        </tbody>
+    </table>
+
+    <script>
+        const url = "https://dummyjson.com/products";
+        
+        async function loadProducts() {
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                
+                // Target the tbody where data will be injected
+                const tableBody = document.getElementById("data");
+                
+                // Build an HTML string using template literals
+                let tableContent = "";
+                
+                data.products.forEach((product, index) => {
+                    tableContent += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${product.title}</td>
+                            <td>${product.category}</td>
+                            <td>$${product.price}</td>
+                            <td>${product.rating}</td>
+                        </tr>
+                    `;
+                });
+                
+                // Insert the built HTML string into the tbody
+                tableBody.innerHTML = tableContent;
+                
+            } catch (err) {
+                console.error("Error fetching data:", err);
+            }
+        }
+        
+        loadProducts();
+    </script>
+</body>
+</html>
+
+```
